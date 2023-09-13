@@ -94,30 +94,12 @@ public class Board {
         return checkDiagonally(hintX, hintY);
     }
 
-    private Check checkHorizontally(int rowIndex) {
-        int xs = 0;
-        int os = 0;
-        for (Check[] column : tiles) {
-            switch (column[rowIndex]){
-                case Empty:
-                    return Check.Empty;
-                case X:
-                    xs++;
-                    break;
-                case O:
-                    os++;
-                    break;
-            }
-        }
-        if (xs == 3) return Check.X;
-        else if (os == 3)  return Check.O;
-        throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
-    }
+    private final Check[] cache = new Check[]{Check.Empty, Check.Empty, Check.Empty};
 
-    private Check checkVertically(int columnIndex) {
+    private Check isWinningStreak() {
         int xs = 0;
         int os = 0;
-        for (Check check : tiles[columnIndex]) {
+        for (Check check : cache) {
             switch (check){
                 case Empty:
                     return Check.Empty;
@@ -134,42 +116,31 @@ public class Board {
         throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
     }
 
+    private Check checkHorizontally(int rowIndex) {
+        for (int i = 0; i < tiles.length; i++) {
+            cache[i] = tiles[i][rowIndex];
+        }
+        return isWinningStreak();
+    }
+
+    private Check checkVertically(int columnIndex) {
+        //small optimization as arraycopy is native can be much faster than the manual copy
+        System.arraycopy(tiles[columnIndex], 0, cache, 0, tiles[columnIndex].length);
+        return isWinningStreak();
+    }
+
     private Check checkDiagonally(int columnIndex, int rowIndex) {
-        int xs = 0;
-        int os = 0;
         if (columnIndex == rowIndex) { //main diagonal
-            for (int i = 0; i < 3; i++) {
-                switch (tiles[i][i]){
-                    case Empty:
-                        return Check.Empty;
-                    case X:
-                        xs++;
-                        break;
-                    case O:
-                        os++;
-                        break;
-                }
+            for (int i = 0; i < tiles.length; i++) {
+                cache[i] = tiles[i][i];
             }
-            if (xs == 3) return Check.X;
-            else if (os == 3)  return Check.O;
-            throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+            return isWinningStreak();
         }
         else if (columnIndex + rowIndex == 2) { //anti-diagonal
-            for (int i = 2; i >= 0; i--) {
-                switch (tiles[i][2 - i]){
-                    case Empty:
-                        return Check.Empty;
-                    case X:
-                        xs++;
-                        break;
-                    case O:
-                        os++;
-                        break;
-                }
+            for (int i = 0; i < tiles.length; i++) {
+                cache[i] = tiles[i][2 - i];
             }
-            if (xs == 3) return Check.X;
-            else if (os == 3)  return Check.O;
-            throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+            return isWinningStreak();
         }
         return Check.Empty;
     }
