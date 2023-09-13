@@ -113,7 +113,7 @@ public class Board {
         }
         if (xs == 3) return Check.X;
         else if (os == 3)  return Check.O;
-        throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+        return Check.Empty;
     }
 
     private Check checkHorizontally(int rowIndex) {
