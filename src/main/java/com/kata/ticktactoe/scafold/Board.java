@@ -1,7 +1,7 @@
 package com.kata.ticktactoe.scafold;
 
 /**
- * Represents a 3x3 tick tac toe board
+ * Represents a 3x3 tick-tac-toe board
  */
 public class Board {
     private static final int SIZE = 3;
@@ -74,6 +74,104 @@ public class Board {
         }
         //Since X always plays first, if X has played more times then it's O's turn to play
         return xs > os ? Player.O : Player.X;
+    }
+
+    /**
+     * Returns the winning check or Empty if we have no winner. In order to avoid searching for all 8 winning
+     * possibilities, the method is "hinted" with the last played position. That way a maximum of 4 cases will be checked
+     * and that is possible only for the central tile 1,1.
+     * @param hintX the x position of the last move.
+     * @param hintY the y position of the last move.
+     * @return the winning check or Empty if there is no winner.
+     */
+    public Check getWinner(int hintX, int hintY) {
+        Check horizontalCheck = checkHorizontally(hintY);
+        if (horizontalCheck != Check.Empty) return horizontalCheck;
+        
+        Check verticalCheck = checkVertically(hintX);
+        if (verticalCheck != Check.Empty) return verticalCheck;
+
+        return checkDiagonally(hintX, hintY);
+    }
+
+    private Check checkHorizontally(int rowIndex) {
+        int xs = 0;
+        int os = 0;
+        for (Check[] column : tiles) {
+            switch (column[rowIndex]){
+                case Empty:
+                    return Check.Empty;
+                case X:
+                    xs++;
+                    break;
+                case O:
+                    os++;
+                    break;
+            }
+        }
+        if (xs == 3) return Check.X;
+        else if (os == 3)  return Check.O;
+        throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+    }
+
+    private Check checkVertically(int columnIndex) {
+        int xs = 0;
+        int os = 0;
+        for (Check check : tiles[columnIndex]) {
+            switch (check){
+                case Empty:
+                    return Check.Empty;
+                case X:
+                    xs++;
+                    break;
+                case O:
+                    os++;
+                    break;
+            }
+        }
+        if (xs == 3) return Check.X;
+        else if (os == 3)  return Check.O;
+        throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+    }
+
+    private Check checkDiagonally(int columnIndex, int rowIndex) {
+        int xs = 0;
+        int os = 0;
+        if (columnIndex == rowIndex) { //main diagonal
+            for (int i = 0; i < 3; i++) {
+                switch (tiles[i][i]){
+                    case Empty:
+                        return Check.Empty;
+                    case X:
+                        xs++;
+                        break;
+                    case O:
+                        os++;
+                        break;
+                }
+            }
+            if (xs == 3) return Check.X;
+            else if (os == 3)  return Check.O;
+            throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+        }
+        else if (columnIndex + rowIndex == 2) { //anti-diagonal
+            for (int i = 2; i >= 0; i--) {
+                switch (tiles[i][2 - i]){
+                    case Empty:
+                        return Check.Empty;
+                    case X:
+                        xs++;
+                        break;
+                    case O:
+                        os++;
+                        break;
+                }
+            }
+            if (xs == 3) return Check.X;
+            else if (os == 3)  return Check.O;
+            throw new IllegalStateException("If we reached that point then the algorithm doesn't work");
+        }
+        return Check.Empty;
     }
 }
 

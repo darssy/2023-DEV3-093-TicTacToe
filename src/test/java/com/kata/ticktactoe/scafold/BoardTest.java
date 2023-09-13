@@ -82,4 +82,49 @@ public class BoardTest {
         board.setPosition(Check.X, 0, 0);
         assertEquals(Player.O, board.getNextMove());
     }
+
+    @Test
+    public void getWinner_EmptyBoard_HasNoWinner() {
+        assertEquals(Check.Empty, new Board().getWinner(0, 0));
+    }
+
+    @Test
+    public void getWinner_OIsHorizontal_OIsTheWinner() {
+
+        Board board = new Board();
+        board.setPosition(Check.O, 0, 0);
+        board.setPosition(Check.O, 1, 0);
+        board.setPosition(Check.O, 2, 0);
+        assertEquals(Check.O, board.getWinner(2, 0));
+    }
+
+    @Test
+    public void getWinner_XIsVertical_XIsTheWinner() {
+
+        Board board = new Board();
+        board.setPosition(Check.X, 1, 0);
+        board.setPosition(Check.X, 1, 1);
+        board.setPosition(Check.X, 1, 2);
+        assertEquals(Check.X, board.getWinner(1, 2));
+    }
+
+    @Test
+    public void getWinner_OIsOnMainDiagonal_OIsTheWinner() {
+
+        Board board = new Board();
+        board.setPosition(Check.O, 0, 0);
+        board.setPosition(Check.O, 1, 1);
+        board.setPosition(Check.O, 2, 2);
+        assertEquals(Check.O, board.getWinner(2, 2));
+    }
+
+    @Test
+    public void getWinner_OIsOnAntiDiagonal_OIsTheWinner() {
+
+        Board board = new Board();
+        board.setPosition(Check.O, 2, 0);
+        board.setPosition(Check.O, 1, 1);
+        board.setPosition(Check.O, 0, 2);
+        assertEquals(Check.O, board.getWinner(0, 2));
+    }
 }
