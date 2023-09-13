@@ -4,7 +4,7 @@ package com.kata.ticktactoe.scafold;
  * Represents a 3x3 tick-tac-toe board
  */
 public class Board {
-    private static final int SIZE = 3;
+    public static final int SIZE = 3;
     private final Check[][] tiles = new Check[SIZE][SIZE];
 
     /**
@@ -130,15 +130,18 @@ public class Board {
     }
 
     private Check checkDiagonally(int columnIndex, int rowIndex) {
+        //On a mathematical 1-based matrix the anti-diagonal is i + j = size + 1
+        //Since we are zero based though, i + j = size - 1
+        int antiDiagonalSum = SIZE - 1;
         if (columnIndex == rowIndex) { //main diagonal
             for (int i = 0; i < tiles.length; i++) {
                 cache[i] = tiles[i][i];
             }
             return isWinningStreak();
         }
-        else if (columnIndex + rowIndex == 2) { //anti-diagonal
+        else if (columnIndex + rowIndex == antiDiagonalSum) {
             for (int i = 0; i < tiles.length; i++) {
-                cache[i] = tiles[i][2 - i];
+                cache[i] = tiles[i][antiDiagonalSum - i];
             }
             return isWinningStreak();
         }

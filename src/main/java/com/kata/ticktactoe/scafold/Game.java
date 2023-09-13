@@ -5,18 +5,32 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a tick-tac-toe game
+ */
 public class Game {
 
     private final Board board;
     private final ArrayList<IGameRule> rules;
-    private int remainingMoves = 9;
+    private int remainingMoves = Board.SIZE * Board.SIZE;
 
+    /**
+     * Initializes a game with a board and a set of rules
+     * @param board the board to play on
+     * @param rules the game rules to apply
+     */
     public Game(Board board, ArrayList<IGameRule> rules) {
         if (board == null) throw new IllegalArgumentException("Board must not be null");
         this.board = board;
         this.rules = rules == null ? new ArrayList<>() : rules;
     }
 
+    /**
+     * Plays a move and returns the result of that move. The move can either be accepted, end the game or result in a
+     * rule violation.
+     * @param nextMove the next move to play if it is valid move.
+     * @return returns the result of this move.
+     */
     public MoveResultData play(Move nextMove) {
         //Could have been placed under a rule but this will be much faster than iterating the board every time
         if (remainingMoves == 0) {

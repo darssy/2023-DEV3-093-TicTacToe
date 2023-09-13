@@ -20,7 +20,7 @@ class BoundaryCheckRule implements IGameRule {
 
     @Override
     public String check(Board board, Move move) {
-        if (move.getX() > 2 || move.getX() < 0 || move.getY() > 2 || move.getY() < 0){
+        if (move.getX() >= Board.SIZE || move.getX() < 0 || move.getY() >= Board.SIZE || move.getY() < 0){
             return "You can't play outside the board bounds";
         }
         return null;
