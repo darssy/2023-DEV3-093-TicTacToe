@@ -34,6 +34,6 @@ class PlayerOrderRule implements IGameRule {
     @Override
     public String check(Board board, Move move) {
         Player nextMove = board.getNextMove();
-        return move.getPlayer() != nextMove ? "It's " + nextMove + "'s turn" : null;
+        return move.getPlayer() != nextMove ? "It's " + nextMove + "'s turn to play" : null;
     }
 }

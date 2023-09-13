@@ -45,8 +45,10 @@ public class GameTests {
         game.play(new Move(Player.X, 0, 0));
         MoveResultData result = game.play(new Move(Player.X, -1, -1));
         assertEquals(MoveResult.ERROR, result.getMoveResult());
-        assertEquals(2, result.getErrors().size());
-        assertEquals(Check.X, board.getPosition(0, 0));
+        List<String> errors = result.getErrors();
+        assertEquals(2, errors.size());
+        assertEquals("You can't play outside the board bounds", errors.get(0));
+        assertEquals("It's O's turn to play", errors.get(1));
     }
 
     @Test
