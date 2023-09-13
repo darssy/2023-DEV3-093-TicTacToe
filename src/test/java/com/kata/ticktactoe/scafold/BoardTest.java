@@ -41,17 +41,17 @@ public class BoardTest {
     @Test
     public void coordinatesAreOutOfRange_setterThrowsException() {
         Board board = new Board();
-        assertThrows(IllegalArgumentException.class, ()-> board.setPosition(Check.X, 3, 0));
-        assertThrows(IllegalArgumentException.class, ()-> board.setPosition(Check.X, 0, 3));
-        assertThrows(IllegalArgumentException.class, ()-> board.setPosition(Check.X, -1, 2));
+        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, 3, 0));
+        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, 0, 3));
+        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, -1, 2));
     }
 
     @Test
     public void coordinatesAreOutOfRange_accessorThrowsException() {
         Board board = new Board();
-        assertThrows(IllegalArgumentException.class, ()-> board.getPosition(3, 0));
-        assertThrows(IllegalArgumentException.class, ()-> board.getPosition(0, 3));
-        assertThrows(IllegalArgumentException.class, ()-> board.getPosition(-1, 2));
+        assertThrows(IllegalArgumentException.class, () -> board.getPosition(3, 0));
+        assertThrows(IllegalArgumentException.class, () -> board.getPosition(0, 3));
+        assertThrows(IllegalArgumentException.class, () -> board.getPosition(-1, 2));
     }
 
     @Test
@@ -68,5 +68,18 @@ public class BoardTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void getNextMove_EmptyBoard_ReturnsX() {
+        Board board = new Board();
+        assertEquals(Player.X, board.getNextMove());
+    }
+
+    @Test
+    public void getNextMove_XAlreadyPlayed_ReturnsO() {
+        Board board = new Board();
+        board.setPosition(Check.X, 0, 0);
+        assertEquals(Player.O, board.getNextMove());
     }
 }

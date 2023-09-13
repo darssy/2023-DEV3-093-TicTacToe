@@ -54,5 +54,26 @@ public class Board {
             }
         }
     }
+
+    public Player getNextMove() {
+        int xs = 0;
+        int os = 0;
+        for (Check[] tile : tiles) {
+            for (Check check : tile) {
+                switch (check) {
+                    case Empty:
+                        break;
+                    case X:
+                        xs++;
+                        break;
+                    case O:
+                        os++;
+                        break;
+                }
+            }
+        }
+        //Since X always plays first, if X has played more times then it's O's turn to play
+        return xs > os ? Player.O : Player.X;
+    }
 }
 
