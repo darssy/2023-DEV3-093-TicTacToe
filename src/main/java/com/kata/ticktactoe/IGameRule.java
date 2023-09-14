@@ -37,3 +37,44 @@ class PlayerOrderRule implements IGameRule {
         return move.getPlayer() != nextMove ? "It's " + nextMove + "'s turn to play" : null;
     }
 }
+
+/**
+ * This rule ensures that each player can play only on empty tiles. Note that this rule is not performing any boundary
+ * validations. As a result the caller must make sure that the Move x and y value are sane before this rule is called
+ */
+class NoOverwriteRule implements IGameRule {
+
+    @Override
+    public String check(Board board, Move move) {
+        return board.getPosition(move.getX(), move.getY()) == Check.Empty ? null
+                : "Please select an empty tile to play on.";
+    }
+}
+
+/**
+ * A rule that merges 2 mutually exclusive rules into one. For example there is no reason to test if the player is
+ * attempting to play on an occupied tile if the tile's x and y are not valid. In that case the rule that checks
+ * for overwrite the tile validity <i>depends on</i> the rules that checks the tile validity. 
+ */
+class DependentRule implements IGameRule {
+
+    private final IGameRule primaryRule;
+
+    private final IGameRule dependentRule;
+
+    public DependentRule(IGameRule primaryRule, IGameRule dependentRule) {
+        if (primaryRule == null) throw new IllegalArgumentException("primaryRule must not be null");
+        if (dependentRule == null) throw new IllegalArgumentException("dependentRule must not be null");
+        if (dependentRule == primaryRule) {
+            throw new IllegalArgumentException("dependentRule and primaryRule must not be the same");
+        }
+        this.primaryRule = primaryRule;
+        this.dependentRule = dependentRule;
+    }
+    
+    @Override
+    public String check(Board board, Move move) {
+        String result = primaryRule.check(board, move);
+        return result == null ? dependentRule.check(board, move) : result;
+    }
+}

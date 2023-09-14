@@ -64,4 +64,12 @@ public class Game {
             return new MoveResultData(errors);
         }
     }
+
+    public static Game createDefault() {
+        Board board = new Board();
+        ArrayList<IGameRule> rules = new ArrayList<>();
+        rules.add(new DependentRule(new BoundaryCheckRule(), new NoOverwriteRule()));
+        rules.add(new PlayerOrderRule());
+        return new Game(board, rules);
+    }
 }

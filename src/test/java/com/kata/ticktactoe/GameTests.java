@@ -12,10 +12,7 @@ public class GameTests {
     @Test
     public void play_XPlaysOnZeroZero_MoveIsAccepted() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         MoveResultData result = game.play(new Move(Player.X, 0, 0));
         assertEquals(MoveResult.SUCCESS, result.getMoveResult());
         assertEquals(Check.X, board.getPosition(0, 0));
@@ -24,10 +21,7 @@ public class GameTests {
     @Test
     public void play_OAttemptsTheFirstMove_MoveIsRejected() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         MoveResultData result = game.play(new Move(Player.O, 0, 0));
         assertEquals(MoveResult.ERROR, result.getMoveResult());
         assertEquals(1, result.getErrors().size());
@@ -37,11 +31,8 @@ public class GameTests {
     @Test
     public void play_XPlaysTwiceSecondTimeOutsideBounds_BothErrorsAreReturned() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
 
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         game.play(new Move(Player.X, 0, 0));
         MoveResultData result = game.play(new Move(Player.X, -1, -1));
         assertEquals(MoveResult.ERROR, result.getMoveResult());
@@ -52,11 +43,22 @@ public class GameTests {
     }
 
     @Test
+    public void play_XPlaysOnOccupiedTile_MoveIsRejected() {
+        Board board = new Board();
+
+        Game game = new Game(board, createAllRulesList());
+        game.play(new Move(Player.X, 1, 2));
+        game.play(new Move(Player.O, 0, 1));
+        MoveResultData result = game.play(new Move(Player.X, 1, 2));
+        assertEquals(MoveResult.ERROR, result.getMoveResult());
+        List<String> errors = result.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals("Please select an empty tile to play on.", errors.get(0));
+    }
+
+    @Test
     public void play_AllMovesArePlayed_GameEndsInDraw() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
 
         Move[] moves = new Move[]{
                 new Move(Player.X, 0, 0),
@@ -69,7 +71,7 @@ public class GameTests {
                 new Move(Player.O, 2, 2),
         };
 
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         for (Move move : moves) {
             MoveResultData result = game.play(move);
             MoveResult moveResult = result.getMoveResult();
@@ -83,9 +85,6 @@ public class GameTests {
     @Test
     public void play_AfterAllMovesArePlayed_ReturnsError() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
 
         Move[] moves = new Move[]{
                 new Move(Player.X, 0, 0),
@@ -98,7 +97,7 @@ public class GameTests {
                 new Move(Player.O, 2, 2),
         };
 
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         for (Move move : moves) {
             MoveResultData result = game.play(move);
             MoveResult moveResult = result.getMoveResult();
@@ -114,9 +113,6 @@ public class GameTests {
     @Test
     public void play_XWinsHorizontally() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
 
         Move[] moves = new Move[]{
                 new Move(Player.X, 0, 0),
@@ -125,7 +121,7 @@ public class GameTests {
                 new Move(Player.O, 1, 1)
         };
 
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         for (Move move : moves) {
             MoveResultData result = game.play(move);
             MoveResult moveResult = result.getMoveResult();
@@ -139,9 +135,6 @@ public class GameTests {
     @Test
     public void play_OWinsVertically() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
-        rules.add(new BoundaryCheckRule());
-        rules.add(new PlayerOrderRule());
 
         Move[] moves = new Move[]{
                 new Move(Player.X, 0, 0),
@@ -151,7 +144,7 @@ public class GameTests {
                 new Move(Player.X, 2, 2)
         };
 
-        Game game = new Game(board, rules);
+        Game game = new Game(board, createAllRulesList());
         for (Move move : moves) {
             MoveResultData result = game.play(move);
             MoveResult moveResult = result.getMoveResult();
@@ -160,5 +153,13 @@ public class GameTests {
         MoveResultData result = game.play(new Move(Player.O, 1, 1));
         assertEquals(MoveResult.END, result.getMoveResult());
         assertEquals(GameResult.O, result.getGameResult());
+    }
+
+    private static ArrayList<IGameRule> createAllRulesList() {
+
+        ArrayList<IGameRule> rules = new ArrayList<>();
+        rules.add(new DependentRule(new BoundaryCheckRule(), new NoOverwriteRule()));
+        rules.add(new PlayerOrderRule());
+        return rules;
     }
 }
