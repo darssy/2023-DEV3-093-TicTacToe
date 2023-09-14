@@ -16,7 +16,7 @@ public class GameRuleTests {
     @Test
     public void BoundaryCheckRule_CoordinatesOutsideBoardBounds_checkReturnsErrorText() {
         Board board = new Board();
-        IGameRule rule = new BoundaryCheckRule();
+        GameRule rule = new BoundaryCheckRule();
         assertNotNull(rule.check(board, new Move(Player.X, 7, 0)));
         assertNotNull(rule.check(board, new Move(Player.X, 3, 0)));
         assertNotNull(rule.check(board, new Move(Player.X, 0, 3)));

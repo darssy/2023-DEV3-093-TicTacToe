@@ -3,7 +3,7 @@ package com.kata.ticktactoe.game;
 /**
  * The basis for all game rules.
  */
-public interface IGameRule {
+public interface GameRule {
     /**
      * Checks if a move can be played on the board without violating the rule
      * @param board the board to apply the validation to
@@ -16,7 +16,7 @@ public interface IGameRule {
 /**
  * A simple rule to check if a player's move is within the board's boundaries
  */
-class BoundaryCheckRule implements IGameRule {
+class BoundaryCheckRule implements GameRule {
 
     @Override
     public String check(Board board, Move move) {
@@ -30,7 +30,7 @@ class BoundaryCheckRule implements IGameRule {
 /**
  * This rule makes sure that one player can't play twice
  */
-class PlayerOrderRule implements IGameRule {
+class PlayerOrderRule implements GameRule {
     @Override
     public String check(Board board, Move move) {
         Player nextMove = board.getNextMove();
@@ -42,7 +42,7 @@ class PlayerOrderRule implements IGameRule {
  * This rule ensures that each player can play only on empty tiles. Note that this rule is not performing any boundary
  * validations. As a result the caller must make sure that the Move x and y value are sane before this rule is called
  */
-class NoOverwriteRule implements IGameRule {
+class NoOverwriteRule implements GameRule {
 
     @Override
     public String check(Board board, Move move) {
@@ -56,13 +56,13 @@ class NoOverwriteRule implements IGameRule {
  * attempting to play on an occupied tile if the tile's x and y are not valid. In that case the rule that checks
  * for overwrite the tile validity <i>depends on</i> the rules that checks the tile validity. 
  */
-class DependentRule implements IGameRule {
+class DependentRule implements GameRule {
 
-    private final IGameRule primaryRule;
+    private final GameRule primaryRule;
 
-    private final IGameRule dependentRule;
+    private final GameRule dependentRule;
 
-    public DependentRule(IGameRule primaryRule, IGameRule dependentRule) {
+    public DependentRule(GameRule primaryRule, GameRule dependentRule) {
         if (primaryRule == null) throw new IllegalArgumentException("primaryRule must not be null");
         if (dependentRule == null) throw new IllegalArgumentException("dependentRule must not be null");
         if (dependentRule == primaryRule) {

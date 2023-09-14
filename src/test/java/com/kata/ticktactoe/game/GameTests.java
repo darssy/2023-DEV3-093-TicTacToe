@@ -184,9 +184,9 @@ public class GameTests {
         }
     }
 
-    private static ArrayList<IGameRule> createAllRulesList() {
+    private static ArrayList<GameRule> createAllRulesList() {
 
-        ArrayList<IGameRule> rules = new ArrayList<>();
+        ArrayList<GameRule> rules = new ArrayList<>();
         rules.add(new DependentRule(new BoundaryCheckRule(), new NoOverwriteRule()));
         rules.add(new PlayerOrderRule());
         return rules;

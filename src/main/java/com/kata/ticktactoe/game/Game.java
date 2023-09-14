@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Game {
 
     private final Board board;
-    private final ArrayList<IGameRule> rules;
+    private final ArrayList<GameRule> rules;
     private int remainingMoves = Board.SIZE * Board.SIZE;
 
     /**
@@ -19,7 +19,7 @@ public class Game {
      * @param board the board to play on
      * @param rules the game rules to apply
      */
-    public Game(Board board, ArrayList<IGameRule> rules) {
+    public Game(Board board, ArrayList<GameRule> rules) {
         if (board == null) throw new IllegalArgumentException("Board must not be null");
         this.board = board;
         this.rules = rules == null ? new ArrayList<>() : rules;
@@ -107,7 +107,7 @@ public class Game {
      */
     public static Game createDefault() {
         Board board = new Board();
-        ArrayList<IGameRule> rules = new ArrayList<>();
+        ArrayList<GameRule> rules = new ArrayList<>();
         rules.add(new DependentRule(new BoundaryCheckRule(), new NoOverwriteRule()));
         rules.add(new PlayerOrderRule());
         return new Game(board, rules);
