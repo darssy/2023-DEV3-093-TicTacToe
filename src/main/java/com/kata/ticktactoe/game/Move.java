@@ -1,4 +1,4 @@
-package com.kata.ticktactoe;
+package com.kata.ticktactoe.game;
 
 /**
  * Represents a player move. Holds the position and the player type (X or O)

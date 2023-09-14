@@ -1,7 +1,7 @@
 package com.kata.ticktactoe.rest;
 
-import com.kata.ticktactoe.GameResult;
-import com.kata.ticktactoe.MoveResult;
+import com.kata.ticktactoe.game.GameResult;
+import com.kata.ticktactoe.game.MoveResult;
 
 import java.util.List;
 

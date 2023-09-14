@@ -1,4 +1,4 @@
-package com.kata.ticktactoe;
+package com.kata.ticktactoe.game;
 
 /**
  * Represents a 3x3 tick-tac-toe board

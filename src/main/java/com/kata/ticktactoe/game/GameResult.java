@@ -1,4 +1,4 @@
-package com.kata.ticktactoe;
+package com.kata.ticktactoe.game;
 
 public enum GameResult {
     DRAW,

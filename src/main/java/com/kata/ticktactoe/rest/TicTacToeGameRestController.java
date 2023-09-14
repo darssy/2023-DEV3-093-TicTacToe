@@ -1,6 +1,8 @@
 package com.kata.ticktactoe.rest;
 
-import com.kata.ticktactoe.*;
+import com.kata.ticktactoe.game.Game;
+import com.kata.ticktactoe.game.Move;
+import com.kata.ticktactoe.game.MoveResultData;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
