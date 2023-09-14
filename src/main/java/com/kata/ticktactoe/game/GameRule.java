@@ -54,7 +54,7 @@ class NoOverwriteRule implements GameRule {
 /**
  * A rule that merges 2 mutually exclusive rules into one. For example there is no reason to test if the player is
  * attempting to play on an occupied tile if the tile's x and y are not valid. In that case the rule that checks
- * for overwrite the tile validity <i>depends on</i> the rules that checks the tile validity. 
+ * if the tile is overwritten <i>depends on</i> the rule that checks the tile validity. 
  */
 class DependentRule implements GameRule {
 
