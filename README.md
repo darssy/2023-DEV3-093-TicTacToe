@@ -20,6 +20,8 @@ then run the artifact:
 java -jar target/TickTacToe-0.0.1-SNAPSHOT.jar
 ```
 
+Then you can test the endpoints under the url http://localhost:8080/
+
 ## Endpoints
 The following REST endpoints are published:
 
