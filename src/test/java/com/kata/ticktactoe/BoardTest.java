@@ -127,4 +127,15 @@ public class BoardTest {
         board.setPosition(Check.O, 0, 2);
         assertEquals(Check.O, board.getWinner(0, 2));
     }
+    
+    @Test
+    public void getBoardStatus_EnsureThatTheTableIsNotRotated() {
+
+        Board board = new Board();
+        board.setPosition(Check.X, 0, 0);
+        board.setPosition(Check.O, 2, 0);
+        board.setPosition(Check.X, 1, 2);
+        String boardStatus = board.getBoardStatus("|", '.');
+        assertEquals("X.O|...|.X.|", boardStatus);
+    }
 }

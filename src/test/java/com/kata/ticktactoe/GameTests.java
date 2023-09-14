@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTests {
@@ -153,6 +154,34 @@ public class GameTests {
         MoveResultData result = game.play(new Move(Player.O, 1, 1));
         assertEquals(MoveResult.END, result.getMoveResult());
         assertEquals(GameResult.O, result.getGameResult());
+    }
+
+    @Test
+    public void reset_AfterReset_RemainingMovesAreNineAndGameBoardIsEmpty() {
+        Board board = new Board();
+
+        Move[] moves = new Move[]{
+                new Move(Player.X, 0, 0),
+                new Move(Player.O, 1, 0),
+                new Move(Player.X, 0, 1)
+        };
+
+        Game game = new Game(board, createAllRulesList());
+        for (Move move : moves) {
+            game.play(move);
+        }
+        assertEquals(9 - moves.length, game.getRemainingMoves());
+        game.reset();
+        assertEquals(9, game.getRemainingMoves());
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Check position = board.getPosition(i, j);
+                if (position != Check.Empty) {
+                    fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
+                }
+            }
+        }
     }
 
     private static ArrayList<IGameRule> createAllRulesList() {

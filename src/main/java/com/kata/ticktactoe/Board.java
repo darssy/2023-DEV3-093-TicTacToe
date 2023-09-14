@@ -77,6 +77,39 @@ public class Board {
     }
 
     /**
+     * Constructs and returns a string that represents the status of the board. X is printed where X has played, Y is
+     * printed where Y has played and emptyTileChar tile is used as spaces might not always be convenient.
+     * @param rowSeparator The string to use in order to separate the rows.
+     * @param emptyTileChar The character that will represent empty tiles.
+     * @return a string representation of the board status showing who has played and where.
+     */
+    public String getBoardStatus(String rowSeparator, char emptyTileChar) {
+        if (emptyTileChar == 'O' || emptyTileChar == 'X') {
+            throw new IllegalArgumentException(emptyTileChar + ": This character is already reserved.");
+        }
+        StringBuilder builder = new StringBuilder();
+        //please note that this is expected to be super inefficient as the fast counter scans the "outer" array and
+        //the cache misses are expected to go bananas. Clearly, if efficiency is paramount that's not the way to go.
+        for (int y = 0; y < SIZE; y++) {
+            for (int x = 0; x < SIZE; x++) {
+                switch (tiles[x][y]) {
+                    case Empty:
+                        builder.append(emptyTileChar);
+                        break;
+                    case X:
+                        builder.append('X');
+                        break;
+                    case O:
+                        builder.append('O');
+                        break;
+                }
+            }
+            builder.append(rowSeparator);
+        }
+        return builder.toString();
+    }
+
+    /**
      * Returns the winning check or Empty if we have no winner. In order to avoid searching for all 8 winning
      * possibilities, the method is "hinted" with the last played position. That way a maximum of 4 cases will be checked
      * and that is possible only for the central tile 1,1.

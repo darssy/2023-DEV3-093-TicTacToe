@@ -65,6 +65,46 @@ public class Game {
         }
     }
 
+    /**
+     * How many tiles are free. It can be zero if the game has ended with a winner. In that case there might be free
+     * tiles but there are no moves left.
+     * @return the number of free tiles (possible moves) or zero if the game ended.
+     */
+    public int getRemainingMoves() {
+        return remainingMoves;
+    }
+
+    /**
+     * Prints the game board in the standard output. Uses default OS line separator and underscores for empty tiles.
+     */
+    public void printBoardStatus() {
+        System.out.println(board.getBoardStatus(System.lineSeparator(), '_'));
+    }
+
+    /**
+     * Constructs and returns a string that represents the status of the board for this game. X is printed where X has
+     * played, Y is printed where Y has played and emptyTileChar tile is used as spaces might not always be convenient.
+     * @param rowSeparator The string to use in order to separate the rows
+     * @param emptyTileChar The character that will represent empty tiles
+     * @return a string representation of the board status showing who has played and where
+     */
+    public String getBoardStatus(String rowSeparator, char emptyTileChar) {
+        return board.getBoardStatus(rowSeparator, emptyTileChar);
+    }
+
+    /**
+     * Resets the game. After this method is called, moves can be played again if the previous game ended and all progress
+     * is lost.
+     */
+    public void reset() {
+        board.reset();
+        remainingMoves = Board.SIZE * Board.SIZE;
+    }
+
+    /**
+     * Creates a default game
+     * @return a game with the default tic-tac-toe rules applying
+     */
     public static Game createDefault() {
         Board board = new Board();
         ArrayList<IGameRule> rules = new ArrayList<>();
