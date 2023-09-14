@@ -46,11 +46,6 @@ public class TicTacToeGameRestController {
     public void resetGame() {
         game.reset();
     }
-
-    @GetMapping()
-    public String greeting() {
-        return "Controller up and running";
-    }
     
     @Bean
     public static Game createDefaultGame() {
