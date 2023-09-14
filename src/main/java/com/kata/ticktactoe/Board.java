@@ -13,7 +13,7 @@ public class Board {
     public Board() {
         for (Check[] tile : tiles) {
             for (int i = 0; i < tile.length; i++) {
-                tile[i] = Check.Empty;
+                tile[i] = Check.EMPTY;
             }
         }
     }
@@ -50,7 +50,7 @@ public class Board {
     public void reset() {
         for (Check[] tile : tiles) {
             for (int i = 0; i < tile.length; i++) {
-                tile[i] = Check.Empty;
+                tile[i] = Check.EMPTY;
             }
         }
     }
@@ -61,7 +61,7 @@ public class Board {
         for (Check[] tile : tiles) {
             for (Check check : tile) {
                 switch (check) {
-                    case Empty:
+                    case EMPTY:
                         break;
                     case X:
                         xs++;
@@ -93,7 +93,7 @@ public class Board {
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
                 switch (tiles[x][y]) {
-                    case Empty:
+                    case EMPTY:
                         builder.append(emptyTileChar);
                         break;
                     case X:
@@ -119,23 +119,23 @@ public class Board {
      */
     public Check getWinner(int hintX, int hintY) {
         Check horizontalCheck = checkHorizontally(hintY);
-        if (horizontalCheck != Check.Empty) return horizontalCheck;
+        if (horizontalCheck != Check.EMPTY) return horizontalCheck;
         
         Check verticalCheck = checkVertically(hintX);
-        if (verticalCheck != Check.Empty) return verticalCheck;
+        if (verticalCheck != Check.EMPTY) return verticalCheck;
 
         return checkDiagonally(hintX, hintY);
     }
 
-    private final Check[] cache = new Check[]{Check.Empty, Check.Empty, Check.Empty};
+    private final Check[] cache = new Check[]{Check.EMPTY, Check.EMPTY, Check.EMPTY};
 
     private Check isWinningStreak() {
         int xs = 0;
         int os = 0;
         for (Check check : cache) {
             switch (check){
-                case Empty:
-                    return Check.Empty;
+                case EMPTY:
+                    return Check.EMPTY;
                 case X:
                     xs++;
                     break;
@@ -146,7 +146,7 @@ public class Board {
         }
         if (xs == 3) return Check.X;
         else if (os == 3)  return Check.O;
-        return Check.Empty;
+        return Check.EMPTY;
     }
 
     private Check checkHorizontally(int rowIndex) {
@@ -178,7 +178,7 @@ public class Board {
             }
             return isWinningStreak();
         }
-        return Check.Empty;
+        return Check.EMPTY;
     }
 }
 

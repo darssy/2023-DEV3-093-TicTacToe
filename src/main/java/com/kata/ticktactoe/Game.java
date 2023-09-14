@@ -47,7 +47,7 @@ public class Game {
             remainingMoves--;
             Check winner = board.getWinner(nextMove.getX(), nextMove.getY());
             switch (winner) {
-                case Empty:
+                case EMPTY:
                     if (remainingMoves == 0) {
                         return new MoveResultData(GameResult.DRAW);
                     }

@@ -13,7 +13,7 @@ public class BoardTest {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 Check position = board.getTileState(i, j);
-                if (position != Check.Empty) {
+                if (position != Check.EMPTY) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
             }
@@ -31,7 +31,7 @@ public class BoardTest {
             for (int j = 0; j < 3; j++) {
                 if (i == 1 && j == 0) continue;
                 Check position = board.getTileState(i, j);
-                if (position != Check.Empty) {
+                if (position != Check.EMPTY) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
             }
@@ -63,7 +63,7 @@ public class BoardTest {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 Check position = board.getTileState(i, j);
-                if (position != Check.Empty) {
+                if (position != Check.EMPTY) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
             }
@@ -85,7 +85,7 @@ public class BoardTest {
 
     @Test
     public void getWinner_EmptyBoard_HasNoWinner() {
-        assertEquals(Check.Empty, new Board().getWinner(0, 0));
+        assertEquals(Check.EMPTY, new Board().getWinner(0, 0));
     }
 
     @Test
