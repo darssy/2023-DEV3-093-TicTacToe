@@ -1,4 +1,4 @@
-package com.kata.ticktactoe.scafold;
+package com.kata.ticktactoe;
 
 /**
  * The basis for all game rules.

@@ -1,4 +1,4 @@
-package com.kata.ticktactoe.scafold;
+package com.kata.ticktactoe;
 
 import java.util.List;
 

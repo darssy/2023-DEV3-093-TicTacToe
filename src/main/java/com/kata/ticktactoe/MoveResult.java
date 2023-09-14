@@ -1,4 +1,4 @@
-package com.kata.ticktactoe.scafold;
+package com.kata.ticktactoe;
 
 public enum MoveResult {
     SUCCESS,
