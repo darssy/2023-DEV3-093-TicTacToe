@@ -19,13 +19,13 @@ public class Board {
     }
 
     /**
-     * Sets a value to the tile positioned at . Only the board boundaries are checked. No other logic applies.
+     * Sets a value to the tile positioned at x, y. Only the board boundaries are checked. No other logic applies.
      *
      * @param value the value to set.
      * @param x     the zero based horizontal position of the check
      * @param y     the zero based vertical position of the check
      */
-    public void setPosition(Check value, int x, int y) {
+    public void setTileState(Check value, int x, int y) {
         if (x >= SIZE || x < 0) throw new IllegalArgumentException("x must be between 0 and 2");
         if (y >= SIZE || y < 0) throw new IllegalArgumentException("y must be between 0 and 2");
         tiles[x][y] = value;
@@ -38,7 +38,7 @@ public class Board {
      * @param y the zero based vertical position of the check
      * @return The value of the tile (x,y)
      */
-    public Check getPosition(int x, int y) {
+    public Check getTileState(int x, int y) {
         if (x >= SIZE || x < 0) throw new IllegalArgumentException("x must be between 0 and 2");
         if (y >= SIZE || y < 0) throw new IllegalArgumentException("y must be between 0 and 2");
         return tiles[x][y];

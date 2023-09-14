@@ -46,7 +46,7 @@ class NoOverwriteRule implements IGameRule {
 
     @Override
     public String check(Board board, Move move) {
-        return board.getPosition(move.getX(), move.getY()) == Check.Empty ? null
+        return board.getTileState(move.getX(), move.getY()) == Check.Empty ? null
                 : "Please select an empty tile to play on.";
     }
 }

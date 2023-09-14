@@ -34,10 +34,10 @@ public class Move {
     public void apply(Board board) {
         switch (player) {
             case X:
-                board.setPosition(Check.X, x, y);
+                board.setTileState(Check.X, x, y);
                 break;
             case O:
-                board.setPosition(Check.O, x, y);
+                board.setTileState(Check.O, x, y);
                 break;
         }
     }

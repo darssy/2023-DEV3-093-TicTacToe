@@ -12,7 +12,7 @@ public class BoardTest {
         Board board = new Board();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Check position = board.getPosition(i, j);
+                Check position = board.getTileState(i, j);
                 if (position != Check.Empty) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
@@ -23,14 +23,14 @@ public class BoardTest {
     @Test
     public void successiveCallToSetAndGet_coordinatesAreWithinRange_ValueIsProperlyStoredAndRetrieved() {
         Board board = new Board();
-        board.setPosition(Check.X, 1, 0);
-        assertEquals(Check.X, board.getPosition(1, 0));
+        board.setTileState(Check.X, 1, 0);
+        assertEquals(Check.X, board.getTileState(1, 0));
 
         //let's also see that the rest of the values are unaffected, otherwise there is no much meaning in the test :)
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == 1 && j == 0) continue;
-                Check position = board.getPosition(i, j);
+                Check position = board.getTileState(i, j);
                 if (position != Check.Empty) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
@@ -41,28 +41,28 @@ public class BoardTest {
     @Test
     public void coordinatesAreOutOfRange_setterThrowsException() {
         Board board = new Board();
-        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, 3, 0));
-        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, 0, 3));
-        assertThrows(IllegalArgumentException.class, () -> board.setPosition(Check.X, -1, 2));
+        assertThrows(IllegalArgumentException.class, () -> board.setTileState(Check.X, 3, 0));
+        assertThrows(IllegalArgumentException.class, () -> board.setTileState(Check.X, 0, 3));
+        assertThrows(IllegalArgumentException.class, () -> board.setTileState(Check.X, -1, 2));
     }
 
     @Test
     public void coordinatesAreOutOfRange_accessorThrowsException() {
         Board board = new Board();
-        assertThrows(IllegalArgumentException.class, () -> board.getPosition(3, 0));
-        assertThrows(IllegalArgumentException.class, () -> board.getPosition(0, 3));
-        assertThrows(IllegalArgumentException.class, () -> board.getPosition(-1, 2));
+        assertThrows(IllegalArgumentException.class, () -> board.getTileState(3, 0));
+        assertThrows(IllegalArgumentException.class, () -> board.getTileState(0, 3));
+        assertThrows(IllegalArgumentException.class, () -> board.getTileState(-1, 2));
     }
 
     @Test
     public void reset_FillsTheBoardWithEmpty() {
         Board board = new Board();
-        board.setPosition(Check.O, 2, 2);
-        board.setPosition(Check.X, 1, 1);
+        board.setTileState(Check.O, 2, 2);
+        board.setTileState(Check.X, 1, 1);
         board.reset();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Check position = board.getPosition(i, j);
+                Check position = board.getTileState(i, j);
                 if (position != Check.Empty) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
@@ -79,7 +79,7 @@ public class BoardTest {
     @Test
     public void getNextMove_XAlreadyPlayed_ReturnsO() {
         Board board = new Board();
-        board.setPosition(Check.X, 0, 0);
+        board.setTileState(Check.X, 0, 0);
         assertEquals(Player.O, board.getNextMove());
     }
 
@@ -92,9 +92,9 @@ public class BoardTest {
     public void getWinner_OIsHorizontal_OIsTheWinner() {
 
         Board board = new Board();
-        board.setPosition(Check.O, 0, 0);
-        board.setPosition(Check.O, 1, 0);
-        board.setPosition(Check.O, 2, 0);
+        board.setTileState(Check.O, 0, 0);
+        board.setTileState(Check.O, 1, 0);
+        board.setTileState(Check.O, 2, 0);
         assertEquals(Check.O, board.getWinner(2, 0));
     }
 
@@ -102,9 +102,9 @@ public class BoardTest {
     public void getWinner_XIsVertical_XIsTheWinner() {
 
         Board board = new Board();
-        board.setPosition(Check.X, 1, 0);
-        board.setPosition(Check.X, 1, 1);
-        board.setPosition(Check.X, 1, 2);
+        board.setTileState(Check.X, 1, 0);
+        board.setTileState(Check.X, 1, 1);
+        board.setTileState(Check.X, 1, 2);
         assertEquals(Check.X, board.getWinner(1, 2));
     }
 
@@ -112,9 +112,9 @@ public class BoardTest {
     public void getWinner_OIsOnMainDiagonal_OIsTheWinner() {
 
         Board board = new Board();
-        board.setPosition(Check.O, 0, 0);
-        board.setPosition(Check.O, 1, 1);
-        board.setPosition(Check.O, 2, 2);
+        board.setTileState(Check.O, 0, 0);
+        board.setTileState(Check.O, 1, 1);
+        board.setTileState(Check.O, 2, 2);
         assertEquals(Check.O, board.getWinner(2, 2));
     }
 
@@ -122,9 +122,9 @@ public class BoardTest {
     public void getWinner_OIsOnAntiDiagonal_OIsTheWinner() {
 
         Board board = new Board();
-        board.setPosition(Check.O, 2, 0);
-        board.setPosition(Check.O, 1, 1);
-        board.setPosition(Check.O, 0, 2);
+        board.setTileState(Check.O, 2, 0);
+        board.setTileState(Check.O, 1, 1);
+        board.setTileState(Check.O, 0, 2);
         assertEquals(Check.O, board.getWinner(0, 2));
     }
     
@@ -132,9 +132,9 @@ public class BoardTest {
     public void getBoardStatus_EnsureThatTheTableIsNotRotated() {
 
         Board board = new Board();
-        board.setPosition(Check.X, 0, 0);
-        board.setPosition(Check.O, 2, 0);
-        board.setPosition(Check.X, 1, 2);
+        board.setTileState(Check.X, 0, 0);
+        board.setTileState(Check.O, 2, 0);
+        board.setTileState(Check.X, 1, 2);
         String boardStatus = board.getBoardStatus("|", '.');
         assertEquals("X.O|...|.X.|", boardStatus);
     }

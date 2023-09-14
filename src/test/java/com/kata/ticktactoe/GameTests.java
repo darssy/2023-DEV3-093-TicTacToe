@@ -16,7 +16,7 @@ public class GameTests {
         Game game = new Game(board, createAllRulesList());
         MoveResultData result = game.play(new Move(Player.X, 0, 0));
         assertEquals(MoveResult.SUCCESS, result.getMoveResult());
-        assertEquals(Check.X, board.getPosition(0, 0));
+        assertEquals(Check.X, board.getTileState(0, 0));
     }
 
     @Test
@@ -26,7 +26,7 @@ public class GameTests {
         MoveResultData result = game.play(new Move(Player.O, 0, 0));
         assertEquals(MoveResult.ERROR, result.getMoveResult());
         assertEquals(1, result.getErrors().size());
-        assertEquals(Check.Empty, board.getPosition(0, 0));
+        assertEquals(Check.Empty, board.getTileState(0, 0));
     }
 
     @Test
@@ -176,7 +176,7 @@ public class GameTests {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Check position = board.getPosition(i, j);
+                Check position = board.getTileState(i, j);
                 if (position != Check.Empty) {
                     fail(String.format("%d,%d is expected to be Empty; found '%s'", i, j, position));
                 }
